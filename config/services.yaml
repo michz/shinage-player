@@ -4,6 +4,11 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
+    env(SHINAGE_SERVER_BASE_URL): "http://127.0.0.1:8001/api/v1/"
+    env(SHINAGE_SERVER_RENDER_URL): "http://127.0.0.1:8001/presentations/"
+    env(SHINAGE_SCREEN_GUID): "f5593517-9939-490d-9a5a-d0a73e9535c4"
+    env(SHINAGE_REMOTE_TIMEOUT): "10000"
+    env(CACHE_BASE_PATH): "/tmp/shinage_cache"
 
 services:
     # default configuration for services in *this* file
@@ -25,3 +30,27 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    App\Cache\LocalFileCache:
+        arguments:
+            $basePath: "%env(CACHE_BASE_PATH)%"
+
+    App\ApiClient\ApiClientV1:
+        arguments:
+            #$remoteBaseUrl: "https://app-staging.shinage.org/api/v1/"
+            $remoteBaseUrl: "%env(SHINAGE_SERVER_BASE_URL)%"
+            #$screenGuid: "2614503e-2266-4158-b621-d94277f75507"
+            $screenGuid: "%env(SHINAGE_SCREEN_GUID)%"
+            $timeout: "%env(SHINAGE_REMOTE_TIMEOUT)%"
+
+    App\ApiClient\RenderClient:
+        arguments:
+            $remoteBaseUrl: "%env(SHINAGE_SERVER_RENDER_URL)%"
+            $screenGuid: "%env(SHINAGE_SCREEN_GUID)%"
+            $timeout: "%env(SHINAGE_REMOTE_TIMEOUT)%"
+
+
+    App\Controller\CurrentController:
+        arguments:
+            $remoteRenderBaseUrl: "%env(SHINAGE_SERVER_RENDER_URL)%"
+
