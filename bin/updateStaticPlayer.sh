@@ -7,5 +7,5 @@ PLAYER_RELEASE_URL="https://raw.githubusercontent.com/michz/shinage-static-playe
 (
 cd $PROJECT_DIR/public
 wget -O ./index.html "$PLAYER_RELEASE_URL"
-sed -i 's/urlParamReader.getUrlParam("current_presentation_url","http:\/\/localhost:8080\/test.txt")/urlParamReader.getUrlParam("current_presentation_url","http:\/\/localhost:8000\/current")/g' index.html
+sed -i 's/urlParamReader.getUrlParam("current_presentation_url","http:\/\/localhost:8080\/test.txt")/urlParamReader.getUrlParam("current_presentation_url","https:\/\/app.shinage.org\/current")/g' index.html
 )
